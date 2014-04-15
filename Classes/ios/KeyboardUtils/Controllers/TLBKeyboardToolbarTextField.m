@@ -8,9 +8,10 @@
 
 #import "TLBKeyboardToolbarTextField.h"
 
-@interface TLBKeyboardToolbarTextField ()
+@interface TLBKeyboardToolbarTextField () <UITextFieldDelegate>
 
 @property(nonatomic, weak) IBOutlet UITextField *textField;
+@property(nonatomic) BOOL textFieldShouldReturnValue;
 
 @end
 
@@ -57,6 +58,7 @@
     // バリデーション
     if (self.validationBlock) {
         if (!self.validationBlock(self.textField.text)) {
+            self.textFieldShouldReturnValue = NO;
             return;
         }
     }
@@ -64,6 +66,7 @@
     // デフォルトを更新する
     self.defaultValue = self.textField.text;
     
+    self.textFieldShouldReturnValue = YES;
     [self completionWithResult:NO];
 }
 
@@ -93,6 +96,13 @@
 
 - (void)focusTextField:(NSNotification *)aNotif {
     [self.textField becomeFirstResponder];
+}
+
+#pragma mark text fields
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self doneAction:self];
+    return self.textFieldShouldReturnValue;
 }
 
 @end
