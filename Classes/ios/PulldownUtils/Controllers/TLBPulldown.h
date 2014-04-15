@@ -36,14 +36,7 @@
  * @param myself 自分自身
  * @param continuous このポインタの実体にYESを代入すると、pulldownを表示しない
  */
-@property(nonatomic, copy) void(^onTapped)(TLBPulldown *myself, BOOL *continuous);
-
-/*
- * selfの選択項目が変化したときに実行されるブロック
- *
- * @param myself 自分自身
- */
-@property(nonatomic, copy) void(^onChanged)(TLBPulldown *);
+@property(nonatomic, copy) void(^tappedBlock)(TLBPulldown *myself, BOOL *continuous);
 
 /*
  * selfの選択項目が変化したときに実行されるブロック

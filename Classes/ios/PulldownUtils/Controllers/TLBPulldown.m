@@ -62,9 +62,9 @@
     }
 
     // タップ時のブロックを実行
-    if (self.onTapped) {
+    if (self.tappedBlock) {
         BOOL continuous = YES;
-        self.onTapped(self, &continuous);
+        self.tappedBlock(self, &continuous);
         if (!continuous) {
             dispatch_semaphore_signal(self.semaphore);
             return;
@@ -190,6 +190,11 @@
     }
     
     [self valueChangedForPickerView:selectedString];
+    
+    if (self.doneBlock) {
+        self.doneBlock(self, selectedString);
+    }
+    
     [self closePickerView:self.pulldownVC];
 }
 
@@ -199,6 +204,13 @@
     }
     
     [self valueChangedForDatetimePickerView:selectedDate];
+    
+    if (self.doneBlock) {
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        df.dateFormat = self.datetimeFormat;
+        self.doneBlock(self, [df stringFromDate:selectedDate]);
+    }
+    
     [self closePickerView:self.pulldownDatetimeVC];
 }
 
