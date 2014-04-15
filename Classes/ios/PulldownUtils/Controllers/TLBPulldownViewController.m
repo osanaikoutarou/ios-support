@@ -65,8 +65,8 @@
         // 1つしかないときはそれを選択状態にする
         [self.manager valueChangedForPickerView:[[self.dataSource objectAtIndex:0] objectAtIndex:0]];
     } else if ([self.dataSource containsObject:self.manager.text]) {
-        NSInteger row = [self.dataSource indexOfObject:self.manager.text];
-        [self.picker selectRow:row inComponent:0 animated:NO];
+        self.selectedRow = [self.dataSource indexOfObject:self.manager.text];
+        [self.picker selectRow:self.selectedRow inComponent:0 animated:NO];
     }
 }
 

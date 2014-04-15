@@ -79,7 +79,7 @@
     } else {
         // ピッカービューを設定
         if (!self.dataSource) {
-            NSLog(@"WARNING: TLBPulldown: data source not found.");
+            [NSException raise:@"NSRuntimeException" format:@"Data source not found."];
         }
 
         // PickerViewControllerのインスタンスをStoryboardから取得
