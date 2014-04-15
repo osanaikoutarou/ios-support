@@ -39,6 +39,7 @@
         gesture.numberOfTapsRequired = 1;
         [self addGestureRecognizer:gesture];
         
+        self.closeActionEnabled = YES;
         self.semaphore = dispatch_semaphore_create(1);
     }
     return self;

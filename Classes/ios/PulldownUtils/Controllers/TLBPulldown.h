@@ -12,6 +12,11 @@
 
 
 /*
+ * 何もない領域をタップで閉じるようにするか（default = YES）
+ */
+@property(nonatomic) BOOL closeActionEnabled;
+
+/*
  * 日時指定モード
  */
 @property(nonatomic) BOOL datetimeMode;

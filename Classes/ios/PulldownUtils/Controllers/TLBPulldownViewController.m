@@ -20,6 +20,7 @@
 
 @property(nonatomic) NSArray *dataSource;
 
+@property(weak, nonatomic) IBOutlet UIButton *closeButton;
 @property(weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property(weak, nonatomic) IBOutlet UIPickerView *picker;
 
@@ -67,6 +68,10 @@
     } else if ([self.dataSource containsObject:self.manager.text]) {
         self.selectedRow = [self.dataSource indexOfObject:self.manager.text];
         [self.picker selectRow:self.selectedRow inComponent:0 animated:NO];
+    }
+    
+    if (!self.manager.closeActionEnabled) {
+        [self.closeButton removeFromSuperview];
     }
 }
 

@@ -18,6 +18,7 @@
 
 @property(nonatomic) TLBPulldown *manager;
 
+@property(weak, nonatomic) IBOutlet UIButton *closeButton;
 @property(weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property(weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 
@@ -56,6 +57,10 @@
     id date = [formatter dateFromString:self.manager.text];
     if ([date isKindOfClass:[NSDate class]]) {
         self.datePicker.date = (NSDate *) date;
+    }
+    
+    if (!self.manager.closeActionEnabled) {
+        [self.closeButton removeFromSuperview];
     }
 }
 
