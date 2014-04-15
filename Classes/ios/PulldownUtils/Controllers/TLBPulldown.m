@@ -6,7 +6,6 @@
 //  Copyright (c) 2013年 teamLab Inc. All rights reserved.
 //
 
-#import "TLBAppDelegate.h"
 #import "TLBPulldown.h"
 
 #import "TLBKeyboardToolbarHelper.h"
@@ -14,8 +13,6 @@
 
 #import "TLBPulldownViewController.h"
 #import "TLBPulldownDatetimeViewController.h"
-
-#import "NSString+TeamLab.h"
 
 @interface TLBPulldown ()
 
@@ -113,7 +110,7 @@
     CGPoint middleCenter = pickerView.center;
 
     // アニメーション開始時のPickerViewの位置を計算
-    UIWindow *mainWindow = (((TLBAppDelegate *) [UIApplication sharedApplication].delegate).window);
+    UIWindow *mainWindow = UIApplication.sharedApplication.delegate.window;
     CGSize offSize = [UIScreen mainScreen].bounds.size;
     CGPoint offScreenCenter = CGPointMake(offSize.width / 2.0, offSize.height * 1.5);
     pickerView.center = offScreenCenter;
