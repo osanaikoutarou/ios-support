@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ydY-jg-Uo3" customClass="TLBKeyboardToolbarStandard">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="m5G-MI-daP"/>
+                <barButtonItem style="plain" systemItem="done" id="qjf-x0-WcK">
+                    <connections>
+                        <action selector="doneAction:" destination="ydY-jg-Uo3" id="GtK-qh-VJf"/>
+                    </connections>
+                </barButtonItem>
+            </items>
+        </toolbar>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="V51-fz-c5k" customClass="TLBKeyboardToolbarStandard">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem style="plain" systemItem="cancel" id="N3U-qe-aCk">
+                    <connections>
+                        <action selector="cancelAction:" destination="V51-fz-c5k" id="w8f-hb-nGY"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="fL4-bp-6cP"/>
+                <barButtonItem style="plain" systemItem="done" id="C0V-0Z-GNv">
+                    <connections>
+                        <action selector="doneAction:" destination="V51-fz-c5k" id="vk8-og-XNP"/>
+                    </connections>
+                </barButtonItem>
+            </items>
+        </toolbar>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Mac-00-LSG" customClass="TLBKeyboardToolbarTextField">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem style="plain" systemItem="cancel" id="7jI-9z-9u9">
+                    <connections>
+                        <action selector="cancelAction:" destination="Mac-00-LSG" id="TFH-Bt-3Y0"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" id="okV-JR-mKe">
+                    <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="EX3-O8-Ga8">
+                        <rect key="frame" x="80" y="7" width="172" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="done" id="OlQ-N9-k63">
+                    <connections>
+                        <action selector="doneAction:" destination="Mac-00-LSG" id="62y-jZ-dut"/>
+                    </connections>
+                </barButtonItem>
+            </items>
+            <connections>
+                <outlet property="textField" destination="EX3-O8-Ga8" id="4md-je-r9a"/>
+            </connections>
+        </toolbar>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="r5C-ml-eQc" customClass="TLBKeyboardToolbarSegmentedControl">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem title="Text" style="plain" id="Bzt-Qm-yTC">
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </barButtonItem>
+                <barButtonItem style="plain" id="VSo-b4-usi">
+                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="0ij-Lq-Uf8">
+                        <rect key="frame" x="58" y="8" width="153" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <segments>
+                            <segment title="First"/>
+                            <segment title="Second"/>
+                        </segments>
+                    </segmentedControl>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="ldd-sb-XvB"/>
+                <barButtonItem systemItem="done" id="JDg-tf-KJx">
+                    <connections>
+                        <action selector="doneAction:" destination="r5C-ml-eQc" id="xc0-45-QW8"/>
+                    </connections>
+                </barButtonItem>
+            </items>
+            <connections>
+                <outlet property="segmentedControl" destination="0ij-Lq-Uf8" id="f6d-q4-PeM"/>
+                <outlet property="titleLabel" destination="Bzt-Qm-yTC" id="n7x-7D-azh"/>
+            </connections>
+        </toolbar>
+    </objects>
+</document>
