@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "git://gitorious.team-lab.local/ios-support/ios-support.git", :tag => "1.0.0" }
   s.source_files  = 'Classes', 'Classes/**/*.{h,m}'
   s.exclude_files = 'Classes/Exclude'
-  s.public_header_files = 'Classes/**/*.h'
+  s.public_header_files = 'Classes/**/*.{h}'
   s.resources    = 'Classes/**/*.xib'
   # s.framework  = ''
   s.requires_arc = true
