@@ -55,13 +55,13 @@
     
     // 排他処理開始
     dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
-
+    
     // 既に用意されている場合は処理しない
     if (self.pulldownVC || self.pulldownDatetimeVC) {
         dispatch_semaphore_signal(self.semaphore);
         return;
     }
-
+    
     // タップ時のブロックを実行
     if (self.tappedBlock) {
         BOOL continuous = YES;
@@ -71,10 +71,10 @@
             return;
         }
     }
-
+    
     if (self.datetimeMode) {
         self.pulldownDatetimeVC = [TLBPulldownDatetimeViewController pulldownDateTimeViewControllerWithManager:self];
-
+        
         // ピッカービューを表示
         [self openPickerView:self.pulldownDatetimeVC];
     } else {
@@ -82,52 +82,58 @@
         if (!self.dataSource) {
             [NSException raise:@"NSRuntimeException" format:@"Data source not found."];
         }
-
+        
         // PickerViewControllerのインスタンスをStoryboardから取得
         self.pulldownVC = [TLBPulldownViewController pulldownViewControllerWithManager:self];
-
+        
         // 型チェック
         NSMutableArray *dataSourceOrigin = [self.dataSource() mutableCopy];
         if (![dataSourceOrigin isKindOfClass:[NSArray class]] || dataSourceOrigin.count < 1) {
             NSLog(@"WARNING: TLBPulldown: data source must be an array.");
         }
-
+        
         // ピッカービューを表示
         [self openPickerView:self.pulldownVC];
     }
-
+    
     // 排他処理終わり
     dispatch_semaphore_signal(self.semaphore);
 }
 
 - (void)openPickerView:(UIViewController *)viewController {
     // PickerViewControllerのインスタンスをStoryboardから取得し
-
+    
     // PickerViewをサブビューとして表示する
     // 表示するときはアニメーションをつけて下から上にゆっくり表示させる
-
+    
     // アニメーション完了時のPickerViewの位置を計算
     UIView *pickerView = viewController.view;
     CGPoint middleCenter = pickerView.center;
-
+    
     // アニメーション開始時のPickerViewの位置を計算
     UIWindow *mainWindow = UIApplication.sharedApplication.delegate.window;
     CGSize offSize = [UIScreen mainScreen].bounds.size;
     CGPoint offScreenCenter = CGPointMake(offSize.width / 2.0, offSize.height * 1.5);
     pickerView.center = offScreenCenter;
-
+    
     [mainWindow addSubview:pickerView];
-
+    
     // アニメーションを使ってPickerViewをアニメーション完了時の位置に表示されるようにする
     [UIView animateWithDuration:0.3 animations:^{
         pickerView.center = middleCenter;
     }];
 }
 
-- (void)closePickerView:(UIViewController *)viewController {
+- (void)closePickerView {
+    UIView __weak *wPickerView = nil;
+    if (self.pulldownVC) {
+        wPickerView = self.pulldownVC.view;
+    } else if (self.pulldownDatetimeVC) {
+        wPickerView = self.pulldownDatetimeVC.view;
+    }
+    
     // PickerViewをアニメーションを使ってゆっくり非表示にする
     TLBPulldown __weak *wSelf = self;
-    UIView __weak *wPickerView = viewController.view;
     
     // アニメーション完了時のPickerViewの位置を計算
     CGSize offSize = [UIScreen mainScreen].bounds.size;
@@ -153,6 +159,8 @@
         if (!isCancelled) {
             [self doneForPickerView:[self selectedText]];
             [self doneForDatetimePickerView:[self selectedDate]];
+        } else {
+            [self closePickerView];
         }
     };
     
@@ -196,7 +204,7 @@
         self.doneBlock(self, selectedString);
     }
     
-    [self closePickerView:self.pulldownVC];
+    [self closePickerView];
 }
 
 - (void)doneForDatetimePickerView:(NSDate *)selectedDate {
@@ -212,7 +220,7 @@
         self.doneBlock(self, [df stringFromDate:selectedDate]);
     }
     
-    [self closePickerView:self.pulldownDatetimeVC];
+    [self closePickerView];
 }
 
 - (NSString *)selectedText {

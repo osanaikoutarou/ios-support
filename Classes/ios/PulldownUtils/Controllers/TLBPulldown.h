@@ -69,6 +69,8 @@
 - (void)doneForPickerView:(NSString *)selectedString;
 - (void)doneForDatetimePickerView:(NSDate *)selectedDate;
 
+- (void)closePickerView;
+
 - (NSString *)selectedText;
 - (NSDate *)selectedDate;
 

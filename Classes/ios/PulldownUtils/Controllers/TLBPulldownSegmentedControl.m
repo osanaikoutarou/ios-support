@@ -42,6 +42,8 @@
             
             [self doneForPickerView:[self selectedText]];
             [self doneForDatetimePickerView:[self selectedDate]];
+        } else {
+            [self closePickerView];
         }
     };
     

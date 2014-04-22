@@ -50,7 +50,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     // 背景を白にする
     [self.picker setBackgroundColor:[UIColor whiteColor]];
     

@@ -46,14 +46,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-   
+    
     // 背景を白にする
     [self.datePicker setBackgroundColor:[UIColor whiteColor]];
     
     // 日付をセット
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = self.manager.datetimeFormat;
-
+    
     id date = [formatter dateFromString:self.manager.text];
     if ([date isKindOfClass:[NSDate class]]) {
         self.datePicker.date = (NSDate *) date;
