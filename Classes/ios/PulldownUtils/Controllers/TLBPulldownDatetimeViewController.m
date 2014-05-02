@@ -59,6 +59,14 @@
         self.datePicker.date = (NSDate *) date;
     }
     
+    // 期間をセット
+    if (self.manager.datetimeOldestDate) {
+        self.datePicker.minimumDate = self.manager.datetimeOldestDate;
+    }
+    if (self.manager.datetimeLatestDate) {
+        self.datePicker.maximumDate = self.manager.datetimeLatestDate;
+    }
+    
     if (!self.manager.closeActionEnabled) {
         [self.closeButton removeFromSuperview];
     }

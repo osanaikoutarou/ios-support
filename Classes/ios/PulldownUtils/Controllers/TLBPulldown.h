@@ -12,7 +12,8 @@
 
 
 /*
- * 何もない領域をタップで閉じるようにするか（default = YES）
+ * 何もない領域をタップで閉じるようにするか
+ * Default is YES
  */
 @property(nonatomic) BOOL closeActionEnabled;
 
@@ -34,6 +35,18 @@
  * 非日時指定モードではこのプロパティは無効
  */
 @property(nonatomic) NSString *datetimeFormat;
+
+/*
+ * 設定可能な最新の日付
+ * 非日時指定モードではこのプロパティは無効
+ */
+@property(nonatomic) NSDate *datetimeLatestDate;
+
+/*
+ * 選択可能な最古の日付
+ * 非日時指定モードではこのプロパティは無効
+ */
+@property(nonatomic) NSDate *datetimeOldestDate;
 
 /*
  * selfがタップされたときに実行されるブロック
