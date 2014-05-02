@@ -17,9 +17,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // カラー設定マクロ
-    [self.view setBackgroundColor:COLOR_BACK_MAIN];
 }
 
 - (void)didReceiveMemoryWarning

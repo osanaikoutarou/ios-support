@@ -37,8 +37,15 @@
     _segmentedControlLists = segmentedControlLists;
     
     NSUInteger idx = 0;
+    
+    // 今あるデータを全て削除する
+    while (self.segmentedControl.numberOfSegments > 0) {
+        [self.segmentedControl removeSegmentAtIndex:0 animated:NO];
+    }
+    
+    // 新たに差し込む
     for (NSString *value in segmentedControlLists) {
-        [self.segmentedControl setTitle:value forSegmentAtIndex:idx++];
+        [self.segmentedControl insertSegmentWithTitle:value atIndex:idx++ animated:NO];
     }
 }
 
