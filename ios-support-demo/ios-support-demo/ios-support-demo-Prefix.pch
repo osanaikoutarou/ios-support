@@ -15,3 +15,43 @@
     #import <Foundation/Foundation.h>
     #import "ios-support.h"
 #endif
+
+
+#pragma mark - URL
+#define HOST_NAME_API [[NSBundle mainBundle] infoDictionary][@"HostNameAPI"]
+
+
+#pragma mark - Log Setting
+
+#ifdef DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define DLog(...)
+#endif
+// ALog always displays output regardless of the DEBUG alarm
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define ALogParams(fmt, ...) NSLog((@"%s [Line %d] - Selected Params : %@"), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__,[fmt[kUAnalyzeParamShredQuerys] description]);
+#define ALogDict(fmt, ...) NSLog((@"%s [Line %d] - Selected Params : %@"), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__,[fmt description]);
+
+
+#pragma mark - Size Setting
+
+#define BOUNDS_SCREEN [[UIScreen mainScreen] bounds]
+
+#define WIDTH_SCREEN BOUNDS_SCREEN.size.width
+
+#define HEIGHT_SCREEN BOUNDS_SCREEN.size.height
+
+
+#pragma mark - Color Setting
+//カラーベース
+#define COLOR_BASE_METHOD(fmt,num) [UIColor colorWithHexString:fmt alpha:num]
+//背景色
+#define COLOR_BACK_MAIN COLOR_BASE_METHOD(@"000000",1.0f)
+
+
+#pragma mark - Font Setting
+#define FONT_BOLD(num) [UIFont fontWithName:@"HiraKakuProN-W6" size:num]
+#define FONT_NORMAL(num) [UIFont fontWithName:@"HiraKakuProN-W3" size:num]
+#define FONT_BOLD_EN(num) [UIFont fontWithName:@"Arial-BoldMT" size:num]
+#define FONT_NORMAL_EN(num) [UIFont fontWithName:@"ArialMT" size:num]
