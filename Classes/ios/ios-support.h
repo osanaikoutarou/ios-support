@@ -11,4 +11,9 @@
 #import "TLBPulldown.h"
 #import "TLBPulldownSegmentedControl.h"
 
+
+#pragma mark - Category
+// UIColor+HexValue.h
+#import "UIColor+HexValue.h"
+
 #endif

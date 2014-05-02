@@ -17,7 +17,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    // カラー設定マクロ
+    [self.view setBackgroundColor:COLOR_BACK_MAIN];
 }
 
 - (void)didReceiveMemoryWarning

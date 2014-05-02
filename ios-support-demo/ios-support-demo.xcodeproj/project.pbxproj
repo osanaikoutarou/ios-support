@@ -32,6 +32,7 @@
 		7F02A07619061846004E9DDF /* TLBPulldownDatetimeViewController_iPhone5.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F02A06919061846004E9DDF /* TLBPulldownDatetimeViewController_iPhone5.xib */; };
 		7F02A07719061846004E9DDF /* TLBPulldownViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F02A06A19061846004E9DDF /* TLBPulldownViewController_iPhone.xib */; };
 		7F02A07819061846004E9DDF /* TLBPulldownViewController_iPhone5.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F02A06B19061846004E9DDF /* TLBPulldownViewController_iPhone5.xib */; };
+		7F8976091913990300F3AB53 /* UIColor+HexValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F8976081913990300F3AB53 /* UIColor+HexValue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,8 @@
 		7F02A06919061846004E9DDF /* TLBPulldownDatetimeViewController_iPhone5.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TLBPulldownDatetimeViewController_iPhone5.xib; sourceTree = "<group>"; };
 		7F02A06A19061846004E9DDF /* TLBPulldownViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TLBPulldownViewController_iPhone.xib; sourceTree = "<group>"; };
 		7F02A06B19061846004E9DDF /* TLBPulldownViewController_iPhone5.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TLBPulldownViewController_iPhone5.xib; sourceTree = "<group>"; };
+		7F8976071913990300F3AB53 /* UIColor+HexValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexValue.h"; sourceTree = "<group>"; };
+		7F8976081913990300F3AB53 /* UIColor+HexValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexValue.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				7F02A05019061846004E9DDF /* ios-support.h */,
+				7F8976051913990300F3AB53 /* Category */,
 				7F02A05119061846004E9DDF /* KeyboardUtils */,
 				7F02A05D19061846004E9DDF /* PulldownUtils */,
 			);
@@ -248,6 +252,23 @@
 				7F02A06B19061846004E9DDF /* TLBPulldownViewController_iPhone5.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7F8976051913990300F3AB53 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				7F8976061913990300F3AB53 /* UIColor+HexValue */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		7F8976061913990300F3AB53 /* UIColor+HexValue */ = {
+			isa = PBXGroup;
+			children = (
+				7F8976071913990300F3AB53 /* UIColor+HexValue.h */,
+				7F8976081913990300F3AB53 /* UIColor+HexValue.m */,
+			);
+			path = "UIColor+HexValue";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,6 +376,7 @@
 				7F02A06E19061846004E9DDF /* TLBKeyboardToolbarStandard.m in Sources */,
 				7F02A0261906182C004E9DDF /* main.m in Sources */,
 				7F02A07319061846004E9DDF /* TLBPulldownSegmentedControl.m in Sources */,
+				7F8976091913990300F3AB53 /* UIColor+HexValue.m in Sources */,
 				7F02A06F19061846004E9DDF /* TLBKeyboardToolbarTextField.m in Sources */,
 				7F02A0301906182C004E9DDF /* TLBViewController.m in Sources */,
 				7F02A07219061846004E9DDF /* TLBPulldownDatetimeViewController.m in Sources */,
@@ -558,6 +580,7 @@
 				7F02A04A1906182C004E9DDF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7F02A04B1906182C004E9DDF /* Build configuration list for PBXNativeTarget "ios-support-demoTests" */ = {
 			isa = XCConfigurationList;
@@ -566,6 +589,7 @@
 				7F02A04D1906182C004E9DDF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
