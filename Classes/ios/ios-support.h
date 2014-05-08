@@ -13,7 +13,8 @@
 
 
 #pragma mark - Category
-// UIColor+HexValue.h
+#import "UIView+BetterRect.h"
+#import "CALayer+BetterRect.h"
 #import "UIColor+HexValue.h"
 
 #endif
