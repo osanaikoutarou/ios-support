@@ -25,6 +25,11 @@
 
 - (void)testModel
 {
+    TLBTestApiModelObject *modelChild = [[TLBTestApiModelObject alloc] init];
+    
+    modelChild.pString = @"itemChild0";
+    modelChild.pArray = @[@"itemChild1", @{@"itemChild2": @"itemChild3"}];
+    
     TLBTestApiModelObject *model = [[TLBTestApiModelObject alloc] init];
     
     model.pString = @"item0";
@@ -34,10 +39,11 @@
     model.p_int = 65536;
     model.p_bool = YES;
     model.pText = @"non-managed";
+    model.pChild = modelChild;
     
     NSString *contents = [[model contentsDictionary] description];
     
-    XCTAssertTrue([self string:contents containsString:@"pString"]      , @"Not included the key of NSString.");
+    XCTAssertTrue([self string:contents containsString:@"pString"]     , @"Not included the key of NSString.");
     XCTAssertTrue([self string:contents containsString:@"item0"]       , @"Not included the value of NSString.");
     XCTAssertTrue([self string:contents containsString:@"pNumber"]     , @"Not included the key of NSString.");
     XCTAssertTrue([self string:contents containsString:@"128"]         , @"Not included the value of NSNumber.");
@@ -56,11 +62,19 @@
     XCTAssertTrue([self string:contents containsString:@"65536"]       , @"Not included the value of int.");
     XCTAssertTrue([self string:contents containsString:@"p_bool"]      , @"Not included the key of BOOL.");
     XCTAssertTrue([self string:contents containsString:@"true"]        , @"Not included the value of BOOL.");
+    
+    XCTAssertTrue([self string:contents containsString:@"pChild"]      , @"Not included the key of Child Object.");
+    XCTAssertTrue([self string:contents containsString:@"itemChild0"]  , @"Not included the value of Child Object.");
+    XCTAssertTrue([self string:contents containsString:@"itemChild1"]  , @"Not included the value of Child Object.");
+    XCTAssertTrue([self string:contents containsString:@"itemChild2"]  , @"Not included the value of Child Object.");
+    XCTAssertTrue([self string:contents containsString:@"itemChild3"]  , @"Not included the value of Child Object.");
+    
     XCTAssertFalse([self string:contents containsString:@"pText"]      , @"Has included the key of non-managed property.");
     XCTAssertFalse([self string:contents containsString:@"non-managed"], @"Has included the value of non-managed property.");
     XCTAssertFalse([self string:contents containsString:@"pStringNil"] , @"Has included the key of nil NSString.");
     XCTAssertFalse([self string:contents containsString:@"pArrayNil"]  , @"Has included the key of nil NSArray.");
     XCTAssertFalse([self string:contents containsString:@"pDictNil"]   , @"Has included the key of nil NSDictionary.");
+    
     
     TLBTestApiModelObject *model2 = [[TLBTestApiModelObject alloc] init];
     [model2 assignValuesByContentsDictionary:[model contentsDictionary]];

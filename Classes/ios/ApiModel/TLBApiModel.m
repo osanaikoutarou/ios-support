@@ -77,6 +77,17 @@
                 continue;
             }
             
+            // TLBApiModelの場合はNSDictionaryに変換する
+            else if ([propertyValue isKindOfClass:[TLBApiModel class]]) {
+                NSDictionary *dict = [propertyValue contentsDictionary];
+                
+                if (!dict || [dict count] == 0) {
+                    continue;
+                }
+                
+                propertyValue = dict;
+            }
+            
             // その他はdescriptionに一旦変換する
             else {
                 NSString *desc = [propertyValue description];
@@ -84,6 +95,8 @@
                 if (!desc || [desc length] == 0) {
                     continue;
                 }
+                
+                propertyValue = desc;
             }
             
             [dataset setObject:propertyValue forKey:propertyName];
@@ -100,6 +113,15 @@
             // 型判定をする
             objc_property_t prop = class_getProperty([self class], [key UTF8String]);
             NSString *propType = [self propertyType:prop];
+            
+            // TLBApiModelの場合は更にアサインする
+            Class modelClass = NSClassFromString(propType);
+            if ([modelClass isSubclassOfClass:[TLBApiModel class]]) {
+                id model = [[modelClass alloc] init];
+                [model assignValuesByContentsDictionary:dataset[key]];
+                [self setValue:model forKey:key];
+                continue;
+            }
             
             if ([self convertBoolToString]) {
                 if ([propType isEqualToString:PROPERTY_TYPE_BOOL]) {

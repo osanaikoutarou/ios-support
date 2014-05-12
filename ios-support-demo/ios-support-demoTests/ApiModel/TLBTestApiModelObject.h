@@ -21,6 +21,7 @@
 @property(nonatomic) NSDictionary *pDictNil;
 @property(nonatomic) int p_int;
 @property(nonatomic) BOOL p_bool;
+@property(nonatomic) TLBTestApiModelObject *pChild;
 
 // not-managed property
 @property(nonatomic) NSString *pText;
