@@ -45,58 +45,10 @@
         
         // 値のnullチェック（ここではnilチェックのみ行う）
         if (propertyValue) {
-            // NSStringは文字数0もnullとみなす
-            if ([propertyValue isKindOfClass:[NSString class]] && [propertyValue length] == 0) {
+            propertyValue = [self contentsInValue:propertyValue property:property];
+            
+            if (!propertyValue) {
                 continue;
-            }
-            
-            // （NSNumberはnilのみ）
-            else if ([propertyValue isKindOfClass:[NSNumber class]]) {
-                if ([self convertBoolToString]) {
-                    // タイプが'c'で、且つ0か1なら、BOOLとみなして、true/falseに書き換える
-                    NSString *type = [self propertyType:property];
-                    if ([type isEqualToString:PROPERTY_TYPE_BOOL]) {
-                        if ([propertyValue isEqualToNumber:@0]) {
-                            propertyValue = @"false";
-                        } else if ([propertyValue isEqualToNumber:@1]) {
-                            propertyValue = @"true";
-                        }
-                    }
-                }
-                
-                // no-op
-            }
-            
-            // NSSArrayは空もnullとみなす
-            else if ([propertyValue isKindOfClass:[NSArray class]] && [propertyValue count] == 0) {
-                continue;
-            }
-            
-            // NSDictionaryは空もnullとみなす
-            else if ([propertyValue isKindOfClass:[NSDictionary class]] && [propertyValue count] == 0) {
-                continue;
-            }
-            
-            // TLBApiModelの場合はNSDictionaryに変換する
-            else if ([propertyValue isKindOfClass:[TLBApiModel class]]) {
-                NSDictionary *dict = [propertyValue contentsDictionary];
-                
-                if (!dict || [dict count] == 0) {
-                    continue;
-                }
-                
-                propertyValue = dict;
-            }
-            
-            // その他はdescriptionに一旦変換する
-            else {
-                NSString *desc = [propertyValue description];
-                
-                if (!desc || [desc length] == 0) {
-                    continue;
-                }
-                
-                propertyValue = desc;
             }
             
             [dataset setObject:propertyValue forKey:propertyName];
@@ -105,6 +57,91 @@
     free(properties);
     
     return dataset;
+}
+
+- (id)contentsInValue:(id)propertyValue property:(objc_property_t)property {
+    // NSStringは文字数0もnullとみなす
+    if ([propertyValue isKindOfClass:[NSString class]] && [propertyValue length] == 0) {
+        return nil;
+    }
+    
+    // （NSNumberはnilのみ）
+    else if ([propertyValue isKindOfClass:[NSNumber class]]) {
+        if ([self convertBoolToString]) {
+            // タイプが'c'で、且つ0か1なら、BOOLとみなして、true/falseに書き換える
+            NSString *type = [self propertyType:property];
+            if ([type isEqualToString:PROPERTY_TYPE_BOOL]) {
+                if ([propertyValue isEqualToNumber:@0]) {
+                    propertyValue = @"false";
+                } else if ([propertyValue isEqualToNumber:@1]) {
+                    propertyValue = @"true";
+                }
+            }
+        }
+        
+        // no-op
+    }
+    
+    // NSArrayは空もnullとみなす
+    else if ([propertyValue isKindOfClass:[NSArray class]]) {
+        if ([propertyValue count] == 0) {
+            return nil;
+        }
+        
+        NSMutableArray *data = [NSMutableArray array];
+        for (id child in propertyValue) {
+            id childValue = [self contentsInValue:child property:property];
+            
+            if (childValue) {
+                [data addObject:childValue];
+            }
+        }
+        
+        return ([data count] == 0) ? nil : data;
+    }
+    
+    // NSDictionaryは空もnullとみなす
+    else if ([propertyValue isKindOfClass:[NSDictionary class]]) {
+        if ([propertyValue count] == 0) {
+            return nil;
+        }
+        
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        NSArray *allKeys = [propertyValue allKeys];
+        for (NSString *child in allKeys) {
+            id childValue = [self contentsInValue:propertyValue[child] property:property];
+            
+            if (childValue) {
+                [data setObject:childValue forKey:child];
+            }
+        }
+        
+        return ([data count] == 0) ? nil : data;
+    }
+    
+    // TLBApiModelの場合はNSDictionaryに変換する
+    else if ([propertyValue isKindOfClass:[TLBApiModel class]]) {
+        NSDictionary *dict = [propertyValue contentsDictionary];
+        
+        if (!dict || [dict count] == 0) {
+        return nil;
+        }
+        
+        propertyValue = dict;
+    }
+    
+    // その他はdescriptionに一旦変換する
+    else {
+        NSString *desc = [propertyValue description];
+        
+        if (!desc || [desc length] == 0) {
+        return nil;
+        }
+        
+        propertyValue = desc;
+    }
+    
+    return propertyValue;
 }
 
 - (void)assignValuesByContentsDictionary:(NSDictionary *)dataset {
