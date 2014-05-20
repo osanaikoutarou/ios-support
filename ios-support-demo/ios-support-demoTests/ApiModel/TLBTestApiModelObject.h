@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TLBApiModel.h"
 
-@protocol TLBTestApiModelObject <NSObject>
-- (NSUInteger)count;
-@end
+@protocol TLBTestApiModelObject;
 
 @interface TLBTestApiModelObject : TLBApiModel
 

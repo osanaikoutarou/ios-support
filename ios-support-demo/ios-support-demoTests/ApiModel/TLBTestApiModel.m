@@ -107,6 +107,10 @@
         TLBTestApiModelObject *objA = model.pChildArray[i];
         TLBTestApiModelObject *objB = model2.pChildArray[i];
         
+        XCTAssertTrue([[objA class] isSubclassOfClass:[TLBTestApiModelObject class]], @"Both class are incompatible.\n%@ vs %@",
+                      NSStringFromClass([objA class]),
+                      NSStringFromClass([TLBTestApiModelObject class]));
+        
         XCTAssertTrue([[[objB contentsDictionary] description] isEqualToString:[[objA contentsDictionary] description]],
                       @"Failed to assign a model from another model data.\n%@ vs %@",
                       [[objA contentsDictionary] description],
