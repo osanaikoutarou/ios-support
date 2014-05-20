@@ -15,27 +15,48 @@
 @interface TLBApiModel : NSObject
 
 /*
- * プロパティのキー名に基づいてNSDictionaryを作成します。
- * ただし、@synthesizeでKVCに準拠しないインスタンス変数を用意した場合には、
- * そのプロパティは無視されます。
+ * NSDictionaryのデータをもとに、プロパティにデータを割り当てたオブジェクトを返します。
  *
- * @return NSDictionary
+ * ルール
+ *     1. NSDictionaryのキー名と対応するプロパティ名がなければ無視します。
+ *     2. プロパティのクラスとしてTLBApiModelのサブクラスを指定した場合は、
+ *        そのサブクラスをインスタンス化したオブジェクトが格納されます。
+ *        このときも、ルール1は適用されます。
+ *     3. NSArrayについては、プロトコル名としてTLBApiModelのサブクラスのクラス名を指定すると、
+ *        そのプロトコル名のクラスをインスタンス化したオブジェクトが格納されます。
+ *        このときも、ルール1は適用されます。
+ *
+ * @param dataset NSJSONSerialization等で取得したNSDictionary
+ * @return self
+ */
+- (instancetype)initWithContentsDictionary:(NSDictionary *)dataset;
+
+/*
+ * プロパティのキー名に基づいてNSDictionaryを作成します。
+ *
+ * ルール
+ * 　　1. @synthesizeでKVCに準拠しないインスタンス変数を用意した場合にはそのプロパティのキーと値は無視されます。
+ *
+ * @return インスタンス
  */
 - (NSDictionary *)contentsDictionary;
 
 /*
- * NSDictionaryのデータをもとに、プロパティにデータを割り当てます。
- * プロパティが宣言されていないデータについては捨てられます。
- *
- * @param dataset NSJSONSerialization等で取得したNSDictionary
- */
-- (void)assignValuesByContentsDictionary:(NSDictionary *)dataset;
-
-/*
  * このメソッドをオーバライドしてYESを返すようにすると、
- * BOOL型のプロパティを@"true"または@"false"で扱うようになります。
- * NOの場合は1または0として扱います
+ * BOOL型のプロパティを@"true"または@"false"として扱います。
+ *
+ * このメソッドをオーバライドしてNOを返すようにすると、
+ * BOOL型のプロパティを1または0として扱います。
+ *
+ * デフォルト YES
  */
 - (BOOL)convertBoolToString;
+
+/*
+ * このメソッドで指定したプロパティについてはnil値の場合でもオブジェクトを用意します。
+ *
+ * デフォルト @[]
+ */
+- (NSArray *)allowsNilValues;
 
 @end

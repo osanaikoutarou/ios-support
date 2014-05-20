@@ -15,6 +15,14 @@
 
 @implementation TLBApiModel
 
+- (instancetype)initWithContentsDictionary:(NSDictionary *)dataset {
+    self = [super init];
+    if (self) {
+        [self assignValuesByContentsDictionary:dataset];
+    }
+    return self;
+}
+
 - (NSDictionary *)contentsDictionary {
     NSMutableDictionary *dataset = [NSMutableDictionary dictionary];
     
@@ -48,9 +56,28 @@
             propertyValue = [self contentsInValue:propertyValue property:property];
             
             if (!propertyValue) {
-                continue;
+                if (![[self allowsNilValues] containsObject:propertyName]) {
+                    continue;
+                }
+                
+                // 強制的にオブジェクトを作る対象
+                NSString *propType = [self propertyType:property];
+                NSString *className = propType;
+                NSString *protocolName = nil;
+                [self getProperty:propType className:&className propertyProtocolName:&protocolName];
+                Class propClass = NSClassFromString(className);
+                propertyValue = [[propClass alloc] init];
             }
             
+            [dataset setObject:propertyValue forKey:propertyName];
+        } else if ([[self allowsNilValues] containsObject:propertyName]) {
+            // 強制的にオブジェクトを作る対象
+            NSString *propType = [self propertyType:property];
+            NSString *className = propType;
+            NSString *protocolName = nil;
+            [self getProperty:propType className:&className propertyProtocolName:&protocolName];
+            Class propClass = NSClassFromString(className);
+            propertyValue = [[propClass alloc] init];
             [dataset setObject:propertyValue forKey:propertyName];
         }
     }
@@ -58,6 +85,8 @@
     
     return dataset;
 }
+
+#pragma mark - internal
 
 - (id)contentsInValue:(id)propertyValue property:(objc_property_t)property {
     // NSStringは文字数0もnullとみなす
@@ -147,17 +176,51 @@
 - (void)assignValuesByContentsDictionary:(NSDictionary *)dataset {
     for (NSString *key in [dataset allKeys]) {
         if ([self respondsToSelector:NSSelectorFromString(key)]) {
-            // 型判定をする
+            // 基本的な情報の取得
             objc_property_t prop = class_getProperty([self class], [key UTF8String]);
             NSString *propType = [self propertyType:prop];
+            NSString *className = propType;
+            NSString *protocolName = nil;
+            
+            // クラス名とプロトコル名に分離
+            [self getProperty:propType className:&className propertyProtocolName:&protocolName];
+            
+            // クラスオブジェクト
+            Class modelClass = NSClassFromString(className);
             
             // TLBApiModelの場合は更にアサインする
-            Class modelClass = NSClassFromString(propType);
             if ([modelClass isSubclassOfClass:[TLBApiModel class]]) {
                 id model = [[modelClass alloc] init];
                 [model assignValuesByContentsDictionary:dataset[key]];
                 [self setValue:model forKey:key];
                 continue;
+            }
+            
+            // NSArrayはプロトコルチェックをする
+            if ([modelClass isSubclassOfClass:[NSArray class]]) {
+                // プロトコルは1種のみ指定可能
+                if (protocolName) {
+                    Class subModelClass = NSClassFromString(protocolName); // プロトコル名からクラスオブジェクトの生成を試みる
+                    if (subModelClass && [subModelClass isSubclassOfClass:[TLBApiModel class]]) {
+                        NSMutableArray *datasetInner = [NSMutableArray array];
+                        
+                        // NSArrayの各要素について評価する
+                        for (id value in dataset[key]) {
+                            id model = [[subModelClass alloc] init];
+                            [model assignValuesByContentsDictionary:value];
+                            [datasetInner addObject:model];
+                        }
+                        
+                        [self setValue:datasetInner forKey:key];
+                        
+                        continue;
+                    } else {
+                        NSLog(@"Warning: protocol '%@' of property '%@' is not found.", protocolName, key);
+                    }
+                } else {
+                    // プロトコルがない場合はそのままにする
+                    [self setValue:dataset[key] forKey:key];
+                }
             }
             
             if ([self convertBoolToString]) {
@@ -180,8 +243,6 @@
         }
     }
 }
-
-#pragma mark - internal
 
 - (NSString *)propertyType:(objc_property_t)property {
     const char *attributes = property_getAttributes(property);
@@ -211,10 +272,26 @@
     return nil;
 }
 
+- (void)getProperty:(NSString *)propType className:(NSString **)className propertyProtocolName:(NSString **)protocolName {
+    NSError *error;
+    NSRegularExpression *regexp = [NSRegularExpression regularExpressionWithPattern:@"^(.+)<(.+)>$"
+                                                                            options:0
+                                                                              error:&error];
+    NSTextCheckingResult *match = [regexp firstMatchInString:propType options:0 range:NSMakeRange(0, propType.length)];
+    if (match.numberOfRanges == 3) {
+        *className = [propType substringWithRange:[match rangeAtIndex:1]];
+        *protocolName = [propType substringWithRange:[match rangeAtIndex:2]];
+    }
+}
+
 #pragma mark - overridden
 
 - (BOOL)convertBoolToString {
     return YES;
+}
+
+- (NSArray *)allowsNilValues {
+    return @[];
 }
 
 @end
