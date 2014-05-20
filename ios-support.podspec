@@ -13,5 +13,5 @@ Pod::Spec.new do |s|
   s.resources    = 'Classes/**/*.xib'
   # s.framework  = ''
   s.requires_arc = true
-  # s.dependency ''
+  s.dependency 'AFNetworking', '~> 2.2'
 end
