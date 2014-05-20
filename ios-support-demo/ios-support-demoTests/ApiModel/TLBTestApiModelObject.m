@@ -12,4 +12,8 @@
 
 @synthesize pText = _pTextInternal;
 
+- (NSArray *)allowsNilValues {
+    return @[@"pStringForce", @"pArrayForce", @"pDictForce"];
+}
+
 @end

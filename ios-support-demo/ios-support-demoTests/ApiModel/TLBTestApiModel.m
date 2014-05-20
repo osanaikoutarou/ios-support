@@ -37,14 +37,6 @@
     modelChildA2.pString = @"itemChildA20";
     modelChildA2.pArray = @[@"itemChildA21", @{@"itemChildA22": @"itemChildA23"}];
     
-    TLBTestApiModelObject *modelChildD1 = [[TLBTestApiModelObject alloc] init];
-    modelChildD1.pString = @"itemChildD10";
-    modelChildD1.pArray = @[@"itemChildD11", @{@"itemChildD12": @"itemChildD13"}];
-    
-    TLBTestApiModelObject *modelChildD2 = [[TLBTestApiModelObject alloc] init];
-    modelChildD2.pString = @"itemChildD20";
-    modelChildD2.pArray = @[@"itemChildD21", @{@"itemChildD22": @"itemChildD23"}];
-    
     TLBTestApiModelObject *model = [[TLBTestApiModelObject alloc] init];
     model.pString = @"item0";
     model.pNumber = @128;
@@ -54,8 +46,7 @@
     model.p_bool = YES;
     model.pText = @"non-managed";
     model.pChild = modelChild;
-    model.pChildArray = @[modelChildA1, modelChildA2];
-    model.pChildDict = @{@"itemD1": modelChildD1, @"itemD2": modelChildD2};
+    model.pChildArray = (NSArray<TLBTestApiModelObject> *) @[modelChildA1, modelChildA2];
     
     NSString *contents = [[model contentsDictionary] description];
     
@@ -95,31 +86,36 @@
     XCTAssertTrue([self string:contents containsString:@"itemChildA22"]  , @"Not included the value of Child Array Object.\n%@", contents);
     XCTAssertTrue([self string:contents containsString:@"itemChildA23"]  , @"Not included the value of Child Array Object.\n%@", contents);
     
-    XCTAssertTrue([self string:contents containsString:@"pChildDict"]    , @"Not included the key of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemD1"]        , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD10"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD11"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD12"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD13"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemD2"]        , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD20"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD21"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD22"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    XCTAssertTrue([self string:contents containsString:@"itemChildD23"]  , @"Not included the value of Child Dictionary Object.\n%@", contents);
-    
     XCTAssertFalse([self string:contents containsString:@"pText"]      , @"Has included the key of non-managed property.\n%@", contents);
     XCTAssertFalse([self string:contents containsString:@"non-managed"], @"Has included the value of non-managed property.\n%@", contents);
     XCTAssertFalse([self string:contents containsString:@"pStringNil"] , @"Has included the key of nil NSString.\n%@", contents);
     XCTAssertFalse([self string:contents containsString:@"pArrayNil"]  , @"Has included the key of nil NSArray.\n%@", contents);
     XCTAssertFalse([self string:contents containsString:@"pDictNil"]   , @"Has included the key of nil NSDictionary.\n%@", contents);
     
+    XCTAssertTrue([self string:contents containsString:@"pStringForce"] , @"Not included the key of nil NSString.\n%@", contents);
+    XCTAssertTrue([self string:contents containsString:@"pArrayForce"]  , @"Not included the key of nil NSArray.\n%@", contents);
+    XCTAssertTrue([self string:contents containsString:@"pDictForce"]   , @"Not included the key of nil NSDictionary.\n%@", contents);
     
-    TLBTestApiModelObject *model2 = [[TLBTestApiModelObject alloc] init];
-    [model2 assignValuesByContentsDictionary:[model contentsDictionary]];
+    TLBTestApiModelObject *model2 = [[TLBTestApiModelObject alloc] initWithContentsDictionary:[model contentsDictionary]];
     
-    XCTAssertTrue([[[model2 contentsDictionary] description] isEqualToString:[[model contentsDictionary] description]], @"Failed to assign a model from another model data.\n%@ vs %@",
+    XCTAssertTrue([[[model2 contentsDictionary] description] isEqualToString:[[model contentsDictionary] description]],
+                  @"Failed to assign a model from another model data.\n%@ vs %@",
                   [[model contentsDictionary] description],
                   [[model2 contentsDictionary] description]);
+    
+    for (int i=0, n=model.pChildArray.count; i<n; ++i) {
+        TLBTestApiModelObject *objA = model.pChildArray[i];
+        TLBTestApiModelObject *objB = model2.pChildArray[i];
+        
+        XCTAssertTrue([[objA class] isSubclassOfClass:[TLBTestApiModelObject class]], @"Both class are incompatible.\n%@ vs %@",
+                      NSStringFromClass([objA class]),
+                      NSStringFromClass([TLBTestApiModelObject class]));
+        
+        XCTAssertTrue([[[objB contentsDictionary] description] isEqualToString:[[objA contentsDictionary] description]],
+                      @"Failed to assign a model from another model data.\n%@ vs %@",
+                      [[objA contentsDictionary] description],
+                      [[objB contentsDictionary] description]);
+    }
     
     NSLog(@"Succeeded: %@", contents);
 }
