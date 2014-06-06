@@ -29,8 +29,8 @@
     TLBKeyboardToolbarSegmentedControl *accessoryView = [TLBKeyboardToolbarHelper instantiateSegmentedControlWithRootView:nil];
     
     accessoryView.titleValue = self.segmentedControlLabel;
-    accessoryView.defaultIndex = self.segmentedControlDefaultIndex;
     accessoryView.segmentedControlLists = self.segmentedControlItems;
+    accessoryView.defaultIndex = self.segmentedControlDefaultIndex;
     
     accessoryView.doneBlock = ^(BOOL isCancelled, NSUInteger resultIndex, NSString *resultText) {
         if (!isCancelled) {
