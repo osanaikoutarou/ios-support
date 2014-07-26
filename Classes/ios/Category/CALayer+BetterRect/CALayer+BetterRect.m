@@ -70,7 +70,7 @@
 - (void) setBottom:(CGFloat)bottom {
     CGPoint origin = self.frame.origin;
     CGSize size = self.frame.size;
-    origin.y = bottom - size.width;
+    origin.y = bottom - size.height;
     self.frame = CGRectMake(origin.x, origin.y, size.width, size.height);
 }
 
