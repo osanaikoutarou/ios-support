@@ -72,6 +72,11 @@
  */
 @property(nonatomic, copy) void(^doneBlock)(TLBPulldown *myself, NSString *result);
 
+/**
+ * AccessoryViewのtintColor
+ */
+@property (strong, nonatomic) UIColor *accessoryViewTintColor;
+
 #pragma mark - internal
 
 - (UIView *)customAccessoryView;

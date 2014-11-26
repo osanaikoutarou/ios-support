@@ -33,6 +33,8 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
+        self.accessoryViewTintColor = self.tintColor;
+        
         // pulldownを表示させるためのジェスチャをはりつける
         self.userInteractionEnabled = YES;
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(replaceToPulldown:)];
@@ -154,7 +156,8 @@
 
 - (UIView *)customAccessoryView {
     TLBKeyboardToolbarStandard *accessoryView = [TLBKeyboardToolbarHelper instantiateStandardWithRootView:nil];
-    
+    accessoryView.tintColor = self.accessoryViewTintColor;
+
     accessoryView.doneBlock = ^(BOOL isCancelled) {
         if (!isCancelled) {
             [self doneForPickerView:[self selectedText]];
